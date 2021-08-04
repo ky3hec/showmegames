@@ -2,20 +2,19 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 function Pagination({ itemsCount, currentPage, pageSize }) {
-  console.log("Pagination", typeof currentPage);
   const pageCount = Math.ceil(itemsCount / pageSize);
-  if (pageCount === "1") return null;
+  if (pageCount <= 1) return null;
   else {
     return (
       <nav className="navbar navbar-expand-sm justify-content-center">
         <ul className="navbar-nav">
           <li className="nav-item">
-            {currentPage === "1" ? (
+            {currentPage === 1 ? (
               <div className="nav-link disabled">Prev</div>
             ) : (
               <NavLink
                 className="nav-link active text-primary"
-                to={`/page/${currentPage - 1}`}
+                to={`/${currentPage - 1}`}
               >
                 Prev
               </NavLink>
@@ -27,12 +26,12 @@ function Pagination({ itemsCount, currentPage, pageSize }) {
             </span>
           </li>
           <li className="nav-item">
-            {currentPage === pageCount.toString() ? (
+            {currentPage === pageCount ? (
               <div className="nav-link disabled">Next</div>
             ) : (
               <NavLink
                 className="nav-link active text-primary"
-                to={`/page/${currentPage + 1}`}
+                to={`/${currentPage + 1}`}
               >
                 Next
               </NavLink>
