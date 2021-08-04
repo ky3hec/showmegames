@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { searchGames } from "../../store/games";
 
 function Search() {
   const [gameTitle, setGameTitle] = useState("");
+  const dispatch = useDispatch();
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    console.log(gameTitle);
+    dispatch(searchGames(gameTitle));
     setGameTitle("");
-    //TODO dispatch GAMES/SEARCH
   };
   return (
     <div className="card card-body mb-4 p-4">
