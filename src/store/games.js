@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { requestStatuses } from "../appConfig";
 //Action types
 const TOP_GAMES_REQUESTED = "topGamesRequested";
 const TOP_GAMES_FAILED = "topGamesFailed";
@@ -13,16 +13,13 @@ const headers = {
   "Client-ID": process.env.REACT_APP_CLIENT_ID,
   Authorization: `Bearer ${process.env.REACT_APP_TOKEN}`,
 };
-const statuses = {
-  requested: "requested",
-  success: "success",
-  failed: "failed",
-};
+
 const initialState = {
   list: [],
   heading: "",
   status: "",
   error: "",
+  pageSize: 10,
 };
 //Action creators
 export function searchGames(searchTerm) {
@@ -84,7 +81,7 @@ export function gameSearchRequested() {
   return {
     type: GAME_SEARCH_REQUESTED,
     payload: {
-      status: "requested",
+      status: requestStatuses.REQUESTED,
     },
   };
 }
@@ -92,15 +89,15 @@ export function topGamesFailed(error) {
   return {
     type: TOP_GAMES_FAILED,
     payload: {
-      error,
+      error: error,
     },
   };
 }
-export function gameSearchFailed(errorMessage) {
+export function gameSearchFailed(error) {
   return {
     type: GAME_SEARCH_FAILED,
     payload: {
-      error: errorMessage,
+      error: error,
     },
   };
 }
@@ -109,23 +106,27 @@ export default function gamesReducer(state = initialState, action) {
   switch (action.type) {
     case GAME_SEARCH_REQUESTED:
     case TOP_GAMES_REQUESTED:
-      return { ...state, status: statuses.requested };
+      return { ...state, status: requestStatuses.REQUESTED };
     case TOP_GAMES_FAILED:
     case GAME_SEARCH_FAILED:
-      return { ...state, status: statuses.failed, error: action.payload };
+      return {
+        ...state,
+        status: requestStatuses.FAILED,
+        error: action.payload,
+      };
     case TOP_GAMES_LOADED:
       return {
         ...state,
         list: action.payload.games,
         heading: "Top 10 Games",
-        status: statuses.success,
+        status: requestStatuses.SUCCESS,
       };
     case GAME_SEARCH_LOADED:
       return {
         ...state,
         list: action.payload.games,
         heading: `Look what we found for: ${action.payload.search}`,
-        status: statuses.success,
+        status: requestStatuses.SUCCESS,
       };
     default:
       return state;

@@ -6,10 +6,8 @@ import GameSummary from "./GameSummary";
 function GameDetail() {
   const history = useHistory();
   const { gameid } = useParams();
-  const [game] = useSelector((state) =>
-    state.games.list.filter((game) => {
-      return game.id === +gameid;
-    })
+  const game = useSelector((state) =>
+    state.games.list.find((game) => game.id === +gameid)
   );
   if (!game) return <Redirect to="/" />;
   const bigCoverUrl = game.cover.url.replace("t_thumb", "t_cover_big");

@@ -1,34 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
+import { reasonableLength } from "./../../appConfig";
 export default function GameSummary({ summary }) {
-  const reasonableLength = 250;
-  const [showMore, setShowMore] = useState(false);
-  if (summary?.length > reasonableLength) {
-    const partOfSummary = summary.slice(0, reasonableLength - 1);
-    return (
-      <div className="list-group-item">
-        {showMore ? (
-          <p>{summary}</p>
-        ) : (
-          <p>
-            {`${partOfSummary}...`}
-            <a
-              href="/#"
-              alt="Read more"
-              onClick={(e) => {
-                e.preventDefault();
-                setShowMore(true);
-              }}
-            >
-              Read more
-            </a>
-          </p>
-        )}
-      </div>
-    );
-  } else
-    return (
-      <div className="list-group-item">
+  const partOfSummary = useMemo(
+    () => summary.slice(0, reasonableLength - 1),
+    [summary]
+  );
+  const [isFullyVisible, setIsFullyVisible] = useState(
+    () => summary?.length <= reasonableLength
+  );
+  return (
+    <div className="list-group-item">
+      {isFullyVisible ? (
         <p>{summary}</p>
-      </div>
-    );
+      ) : (
+        <p>
+          {`${partOfSummary}...`}
+          <a
+            href="/#"
+            alt="Read more"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsFullyVisible(true);
+            }}
+          >
+            Read more
+          </a>
+        </p>
+      )}
+    </div>
+  );
 }
