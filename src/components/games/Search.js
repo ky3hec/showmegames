@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { searchGames } from "../../store/games";
+import { useHistory } from "react-router-dom";
 
 function Search() {
   const [gameTitle, setGameTitle] = useState("");
-  const dispatch = useDispatch();
+  const history = useHistory();
+  // const dispatch = useDispatch();
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    dispatch(searchGames(gameTitle));
+    history.push(`/?search=${gameTitle.toLowerCase()}&page=1`);
     setGameTitle("");
   };
   return (

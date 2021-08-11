@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function GameCard({ game }) {
   const {
@@ -9,12 +9,12 @@ function GameCard({ game }) {
   return (
     <div className="col-md-6">
       <div className="mb-2 shadow-sm p-2 rounded">
-        <Link to={`/game/${game.id}`}>
+        <NavLink to={`/game/${game.id}`} className="nav-link">
           <img src={url} className="img-thumbnail" alt=""></img>
-        </Link>
-        <div className="card-body pl-5">
-          <h5>{name}</h5>
-        </div>
+          <div className="card-body pl-5">
+            <h5>{name}</h5>
+          </div>
+        </NavLink>
       </div>
     </div>
   );

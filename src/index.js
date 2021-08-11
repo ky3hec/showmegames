@@ -1,17 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import reportWebVitals from "./reportWebVitals";
 import App from "./App";
 import { store } from "./store/store";
-import { getTopGames } from "./store/games";
 
-store.dispatch(getTopGames());
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <Router>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </Router>
   </React.StrictMode>,
   document.getElementById("root")
 );
