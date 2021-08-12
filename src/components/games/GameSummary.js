@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { reasonableLength } from "./../../appConfig";
-export default function GameSummary({ summary }) {
+export default function GameSummary({ summary = "" }) {
   const partOfSummary = useMemo(
     () => summary.slice(0, reasonableLength - 1),
     [summary]

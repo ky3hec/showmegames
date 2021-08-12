@@ -1,14 +1,18 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { searchGames } from "../../store/games/actions";
 
-function Search() {
-  const [gameTitle, setGameTitle] = useState("");
+function Search({ value }) {
+  const [gameTitle, setGameTitle] = useState(value);
   const history = useHistory();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    history.push(`/?search=${gameTitle.toLowerCase()}&page=1`);
-    setGameTitle("");
+    const searchTerm = gameTitle.trim().replace(/\s/g, "_").toLowerCase();
+    history.replace(`/?search=${searchTerm}&page=1`);
+    dispatch(searchGames(gameTitle.trim().toLowerCase()));
   };
   return (
     <div className="card card-body mb-4 p-4">
