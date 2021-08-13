@@ -13,10 +13,11 @@ import Pagination from "../layout/Pagination";
 import { searchGames } from "../../store/games/actions";
 
 const Index = ({ location }) => {
-  const { search, page: pageNumber } = queryString.parse(location.search);
+  const { page: pageNumber } = queryString.parse(location.search);
   const { status, error } = useSelector((state) => state.games);
   const { list, heading, pageSize } = useSelector((state) => state.games);
   const { length: gamesTotal } = list;
+  const { search } = queryString.parse(location.search);
   const dispatch = useDispatch();
   useEffect(() => {
     if (!search) dispatch(searchGames("top10"));
@@ -29,7 +30,7 @@ const Index = ({ location }) => {
   return (
     <>
       <Navbar />
-      <Search value={search} />
+      <Search />
       {status === requestStatuses.REQUESTED && <Spinner />}
       {status === requestStatuses.FAILED && <ErrorMessage error={error} />}
       {status === requestStatuses.SUCCESS && (
