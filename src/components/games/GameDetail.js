@@ -1,10 +1,16 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Redirect, useHistory, useParams } from "react-router-dom";
+import GameSummary from "./GameSummary";
 
-function GameDetail(props) {
+function GameDetail() {
   const history = useHistory();
-
-  // TODO get game name, genre, storyLine, summary, first_release_date, cover
+  const { gameid } = useParams();
+  const game = useSelector((state) =>
+    state.games.list.find((game) => game.id === +gameid)
+  );
+  if (!game) return <Redirect to="/" />;
+  const bigCoverUrl = game.cover.url.replace("t_thumb", "t_cover_big");
   return (
     <>
       <button
@@ -15,17 +21,32 @@ function GameDetail(props) {
       </button>
       <div className="row justify-content-center">
         <div className="col">
-          <h1>Awesome Game Name</h1>
+          <h1>{game.name}</h1>
         </div>
       </div>
       <div className="row">
         <div className="col">
-          <h3>Cover here</h3>
+          <img src={bigCoverUrl} alt="" />
         </div>
         <div className="col">
-          <h3>Details here</h3>
-          <div className="list-group">
-            <div className="list-group-item">Here 1</div>
+          <div className="list-group list-group-flush">
+            <div className="list-group-item">
+              <strong>Genre: </strong>
+              {game.genres?.map(({ name, id }) => (
+                <span className="badge bg-warning text-dark me-1" key={id}>
+                  {name}
+                </span>
+              ))}
+            </div>
+            <div className="list-group-item">
+              <strong>Platform: </strong>
+              {game.platforms?.map(({ abbreviation, id }) => (
+                <span className="badge bg-info text-dark me-1" key={id}>
+                  {abbreviation}{" "}
+                </span>
+              ))}
+            </div>
+            <GameSummary summary={game.summary} />
           </div>
         </div>
       </div>

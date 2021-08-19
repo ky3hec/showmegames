@@ -1,13 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
+import queryString from "query-string";
+import { searchGames } from "../../store/games/actions";
 
 function Search() {
   const [gameTitle, setGameTitle] = useState("");
+  const history = useHistory();
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const { search } = queryString.parse(location.search);
+  useEffect(() => {
+    if (search) {
+      dispatch(searchGames(search.replace(/_/g, " ")));
+      setGameTitle(search.replace(/_/g, " "));
+    }
+  }, [dispatch, search]);
+
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    console.log(gameTitle);
-    setGameTitle("");
-    //TODO dispatch GAMES/SEARCH
+    const searchTerm = gameTitle.trim().replace(/\s/g, "_").toLowerCase();
+    history.replace(`/?search=${searchTerm}&page=1`);
   };
+
   return (
     <div className="card card-body mb-4 p-4">
       <h1 className="display-4 text-center">

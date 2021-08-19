@@ -1,28 +1,20 @@
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import Index from "./components/layout/Index";
 import GameDetail from "./components/games/GameDetail";
+import NotFound from "./components/layout/notfound";
 
 function App() {
-  //TODO dispatch GAMES/GET_TOP
   return (
-    <Router>
-      <div className="App">
-        <div className="container">
-          <Switch>
-            <Route exact path={["/", "/page/:currentPage"]} component={Index} />
-            <Route
-              path="/game/:gameid"
-              render={() => {
-                console.clear();
-                console.log("I've send a request to server");
-                return <GameDetail />;
-              }}
-              exact
-            />
-          </Switch>
-        </div>
+    <div className="App">
+      <div className="container">
+        <Switch>
+          <Route path="/game/:gameid" component={GameDetail} exact />
+          <Route exact path="/not-found" component={NotFound} />
+          <Route exact path="/" component={Index} />
+          <Redirect to="/not-found" />
+        </Switch>
       </div>
-    </Router>
+    </div>
   );
 }
 
